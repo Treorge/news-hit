@@ -6,7 +6,7 @@ import { watch } from 'vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-const isRegister = ref(true)
+const isRegister = ref(false)
 
 //表单数据对象
 const formModel = ref({
