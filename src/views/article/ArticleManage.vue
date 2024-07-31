@@ -1,10 +1,11 @@
 <script setup>
-import { artGetListService } from '@/api/article'
+import { artDelService, artGetListService } from '@/api/article'
 import { Delete, Edit } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 import ChannelSelect from './components/ChannelSelect.vue'
 import { formatTime } from '@/utils/format'
 import ArticleEdit from './components/ArticleEdit.vue'
+import { ElMessage } from 'element-plus'
 
 const articleList = ref([])
 const total = ref(0)
@@ -14,12 +15,12 @@ const params = ref({
   cate_id: '',
   state: ''
 })
+
 const loading = ref(false)
 //获取文章列表
 const getArticleList = async () => {
   loading.value = true
   const res = await artGetListService(params.value)
-  console.log(res)
   articleList.value = res.data.data
   total.value = res.data.total
   loading.value = false
@@ -57,11 +58,22 @@ const onAddArticle = () => {
 }
 //编辑文章
 const onEditArticle = (row) => {
-  articleEditRef.value.open({ row })
+  articleEditRef.value.open(row)
 }
 //删除文章
-const onDeleteArticle = (row) => {
-  console.log(row)
+const onDeleteArticle = async (row) => {
+  await ElMessageBox.confirm('你确认要删除该文章吗？', '温馨提示', {
+    type: 'warning',
+    confirmButtonText: '确认',
+    cancelButtonText: '取消'
+  })
+  await artDelService(row.id)
+  ElMessage({ type: 'success', message: '删除成功' })
+  getArticleList()
+}
+
+const onSuccess = () => {
+  getArticleList()
 }
 </script>
 
@@ -70,7 +82,7 @@ const onDeleteArticle = (row) => {
     <template #extra>
       <el-button @click="onAddArticle" type="primary">发布文章</el-button>
     </template>
-    <article-edit ref="articleEditRef"></article-edit>
+    <article-edit ref="articleEditRef" @success="onSuccess"></article-edit>
     <el-form inline>
       <el-form-item label="文章分类：">
         <channel-select v-model="params.cate_id"></channel-select>
