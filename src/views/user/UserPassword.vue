@@ -56,13 +56,13 @@ const reset = () => {
       <el-col :span="12">
         <el-form ref="formRef" :model="form" :rules="rules" label-width="100px">
           <el-form-item label="旧密码" prop="old_pwd">
-            <el-input v-model="form.old_pwd" type="password" />
+            <el-input v-model="form.old_pwd" show-password type="password" />
           </el-form-item>
           <el-form-item label="新密码" prop="new_pwd">
-            <el-input v-model="form.new_pwd" type="password" />
+            <el-input v-model="form.new_pwd" show-password type="password" />
           </el-form-item>
           <el-form-item label="确认新密码" prop="re_pwd">
-            <el-input v-model="form.re_pwd" type="password" />
+            <el-input v-model="form.re_pwd" show-password type="password" />
           </el-form-item>
         </el-form>
         <br />

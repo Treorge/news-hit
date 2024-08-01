@@ -48,7 +48,8 @@ const form = ref()
 
 const register = async () => {
   await form.value.validate()
-  await userRegisterService(formModel.value)
+  const res = await userRegisterService(formModel.value)
+  if (!res) return
   ElMessage.success('注册成功')
   isRegister.value = false
 }
@@ -102,6 +103,7 @@ const login = async () => {
             type="password"
             placeholder="请输入密码"
             v-model="formModel.password"
+            show-password
           ></el-input>
         </el-form-item>
         <el-form-item prop="repassword">
@@ -110,6 +112,7 @@ const login = async () => {
             type="password"
             placeholder="请输入再次密码"
             v-model="formModel.repassword"
+            show-password
           ></el-input>
         </el-form-item>
         <el-form-item>
@@ -154,6 +157,7 @@ const login = async () => {
             :prefix-icon="Lock"
             type="password"
             placeholder="请输入密码"
+            show-password
           ></el-input>
         </el-form-item>
         <el-form-item class="flex">
